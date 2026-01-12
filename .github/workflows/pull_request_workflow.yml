@@ -1,64 +1,64 @@
-name: Auto merge workflow
-on:
-  push:
-    branches:
-      - dev
-
-jobs:
-  test-build-pull_request:
-    runs-on: ubuntu-latest
-
-    # configure mysql server
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: store
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
-    # Give permissions
-    permissions:
-      contents: write
-      pull-requests: write
-
-    steps:
-      # check out the repo code into GitHub actions runner (So, the workflow can access it.)
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      # setup java jdk
-      - name: Setup JDK 25
-        uses: actions/setup-java@v4.8.0
-        with:
-          java-version: '25'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      # test the project
-      - name: Run Test
-        run: mvn clean test
-
-      # Build the application
-      - name: Build Application
-        run: mvn package -DSkipTests
-
-      # Merge to master if success previous steps
-      - name: Create pull request
-        if: success()
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: '${{ secrets.GITHUB_TOKEN }}'
-          branch: dev
-          base: master
-          title: 'Changes by dev branch action'
-          body: 'Automated PR after successful build.'
-
+#name: Auto merge workflow
+#on:
+#  push:
+#    branches:
+#      - dev
+#
+#jobs:
+#  test-build-pull_request:
+#    runs-on: ubuntu-latest
+#
+#    # configure mysql server
+#    services:
+#      mysql:
+#        image: mysql:8.0
+#        env:
+#          MYSQL_DATABASE: store
+#          MYSQL_ROOT_PASSWORD: root
+#        ports:
+#          - 3306:3306
+#        options: >-
+#          --health-cmd="mysqladmin ping --silent"
+#          --health-interval=10s
+#          --health-timeout=5s
+#          --health-retries=3
+#
+#    # Give permissions
+#    permissions:
+#      contents: write
+#      pull-requests: write
+#
+#    steps:
+#      # check out the repo code into GitHub actions runner (So, the workflow can access it.)
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      # setup java jdk
+#      - name: Setup JDK 25
+#        uses: actions/setup-java@v4.8.0
+#        with:
+#          java-version: '25'
+#          distribution: 'temurin'
+#          cache: 'maven'
+#
+#      # test the project
+#      - name: Run Test
+#        run: mvn clean test
+#
+#      # Build the application
+#      - name: Build Application
+#        run: mvn package -DSkipTests
+#
+#      # Merge to master if success previous steps
+#      - name: Create pull request
+#        if: success()
+#        uses: peter-evans/create-pull-request@v5
+#        with:
+#          token: '${{ secrets.GITHUB_TOKEN }}'
+#          branch: dev
+#          base: master
+#          title: 'Changes by dev branch action'
+#          body: 'Automated PR after successful build.'
+#

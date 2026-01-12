@@ -1,4 +1,4 @@
-package Entities;
+package com.store_api.springstoreapi.Entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
