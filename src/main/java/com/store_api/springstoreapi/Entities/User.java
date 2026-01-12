@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -27,13 +28,13 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private Set<Address> addresses = new LinkedHashSet<>();
+    private Set<Address> addresses = new HashSet<>();
 
     @OneToOne(mappedBy = "users")
     private Profile profile;
 
     @ManyToMany
-    private Set<Product> products = new LinkedHashSet<>();
+    private Set<Product> products = new HashSet<>();
 
 
 }
