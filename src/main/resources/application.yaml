@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: Spring-Store-API
+  datasource:
+    url: jdbc:mysql://localhost:3306/store?createDatabaseIfNotExist=true
+    username: root
+    password: root
