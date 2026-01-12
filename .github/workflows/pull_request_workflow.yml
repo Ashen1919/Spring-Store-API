@@ -5,8 +5,23 @@ on:
       - dev
 
 jobs:
-  test-build-merge:
+  test-build-pull_request:
     runs-on: ubuntu-latest
+
+    # configure mysql server
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: store
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     # Give permissions
     permissions:
